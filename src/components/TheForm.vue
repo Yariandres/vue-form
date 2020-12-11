@@ -1,8 +1,18 @@
 <template>
   <form @submit.prevent="submitForm">
-    <div class="form-control">
+    <div
+      class="form-control"
+      :class="{ invalid: userNameVadility === 'invalid' }"
+    >
       <label for="user-name">Your Name</label>
-      <input id="user-name" name="user-name" type="text" v-model="userName" />
+      <input
+        id="user-name"
+        name="user-name"
+        type="text"
+        v-model.trim="userName"
+        @blur="validateInput"
+      />
+      <p v-if="userNameVadility === 'invalid'">Please enter a valid name!</p>
     </div>
     <div class="form-control">
       <label for="age">Your Age (Years)</label>
@@ -89,7 +99,12 @@
       </div>
     </div>
     <div class="from-control">
-      <input type="checkbox" id="confirm-terms" name="confirm-terms" v-model="confirm">
+      <input
+        type="checkbox"
+        id="confirm-terms"
+        name="confirm-terms"
+        v-model="confirm"
+      />
       <label for="confirm-terms">Agree to terms of use?</label>
     </div>
     <div>
@@ -107,7 +122,8 @@ export default {
       referrer: 'wom',
       interest: [],
       how: null,
-      confirm: false
+      confirm: false,
+      userNameVadility: 'pending'
     };
   },
 
@@ -130,7 +146,14 @@ export default {
       this.how = null;
       console.log('Confirm');
       console.log(this.confirm);
-      this.confirm = false
+      this.confirm = false;
+    },
+    validateInput() {
+      if (this.userName === '') {
+        this.userNameVadility = 'invalid';
+      } else {
+        this.userNameVadility = 'valid';
+      }
     }
   }
 };
@@ -148,6 +171,14 @@ form {
 
 .form-control {
   margin: 0.5rem 0;
+}
+
+.form-control.invalid input {
+  border-color: red;
+}
+
+.form-control.invalid label {
+  color: red;
 }
 
 label {
