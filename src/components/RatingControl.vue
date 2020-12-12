@@ -7,7 +7,7 @@
 </template>
 
 <style>
-ul {
-    list-style: none;
-}
+    ul {
+        list-style: none;
+    }
 </style>
